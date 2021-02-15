@@ -6,6 +6,10 @@ import Backbone from 'backbone';
 
 let TEMPLATE = require('../templates/tag_preview.html');
 let ENTER_KEY = 13;
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window);
 
 
 export class TagPreviewView extends View {
@@ -55,7 +59,7 @@ export class TagPreviewView extends View {
   _set_name_change() {
      let el = document.getElementById("id_name");
      if (el) {
-       this.name = el.value;  
+       this.name = DOMPurify.sanitize(el.value);  
      } 
   }
 
